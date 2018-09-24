@@ -1,39 +1,40 @@
 # The COPYRIGHT file at the top level of this repository contains
 # the full copyright notices and license terms.
+from __future__ import absolute_import
 from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
 from trytond.modules.account_bank.account import BankMixin
 
-__all__ = ['PaymentType', 'Contract', 'ContractConsumption']
+__all__ = [u'PaymentType', u'Contract', u'ContractConsumption']
 
 
-class PaymentType:
+class PaymentType(object):
     __metaclass__ = PoolMeta
-    __name__ = 'account.payment.type'
+    __name__ = u'account.payment.type'
 
     @classmethod
     def __setup__(cls):
         super(PaymentType, cls).__setup__()
-        cls._check_modify_related_models.add(('contract', 'payment_type'))
+        cls._check_modify_related_models.add((u'contract', u'payment_type'))
 
 
 class Contract(BankMixin):
-    __name__ = 'contract'
     __metaclass__ = PoolMeta
+    __name__ = u'contract'
 
-    payment_type = fields.Many2One('account.payment.type', 'Payment Type',
+    payment_type = fields.Many2One(u'account.payment.type', u'Payment Type',
         domain=[
-            ('kind', 'in', ['both', 'receivable']),
+            (u'kind', u'in', [u'both', u'receivable']),
             ])
 
     @classmethod
     def default_payment_type(cls):
-        PaymentType = Pool().get('account.payment.type')
+        PaymentType = Pool().get(u'account.payment.type')
         payment_types = PaymentType.search(cls.payment_type.domain)
         if len(payment_types) == 1:
             return payment_types[0].id
 
-    @fields.depends('party')
+    @fields.depends(u'party')
     def on_change_party(self):
         self.payment_type = None
         self.bank_account = None
@@ -43,22 +44,22 @@ class Contract(BankMixin):
         if self.payment_type:
             self._get_bank_account()
 
-class ContractConsumption:
-    __name__ = 'contract.consumption'
+class ContractConsumption(object):
     __metaclass__ = PoolMeta
+    __name__ = u'contract.consumption'
 
     @classmethod
     def _group_invoice_key(cls, line):
         consumption, invoice_line = line
         return super(ContractConsumption, cls)._group_invoice_key(line) + [
-            ('payment_type', consumption.contract.payment_type),
-            ('bank_account', consumption.contract.bank_account),
+            (u'payment_type', consumption.contract.payment_type),
+            (u'bank_account', consumption.contract.bank_account),
             ]
 
     @classmethod
     def _get_invoice(cls, keys):
         invoice = super(ContractConsumption, cls)._get_invoice(keys)
         values = dict(keys)
-        invoice.payment_type = values['payment_type']
-        invoice.bank_account = values['bank_account']
+        invoice.payment_type = values[u'payment_type']
+        invoice.bank_account = values[u'bank_account']
         return invoice
