@@ -7,8 +7,7 @@ from trytond.modules.account_bank.account import BankMixin
 __all__ = ['PaymentType', 'Contract', 'ContractConsumption']
 
 
-class PaymentType:
-    __metaclass__ = PoolMeta
+class PaymentType(metaclass=PoolMeta):
     __name__ = 'account.payment.type'
 
     @classmethod
@@ -17,9 +16,8 @@ class PaymentType:
         cls._check_modify_related_models.add(('contract', 'payment_type'))
 
 
-class Contract(BankMixin):
+class Contract(BankMixin, metaclass=PoolMeta):
     __name__ = 'contract'
-    __metaclass__ = PoolMeta
 
     payment_type = fields.Many2One('account.payment.type', 'Payment Type',
         domain=[
@@ -43,9 +41,8 @@ class Contract(BankMixin):
         if self.payment_type:
             self._get_bank_account()
 
-class ContractConsumption:
+class ContractConsumption(metaclass=PoolMeta):
     __name__ = 'contract.consumption'
-    __metaclass__ = PoolMeta
 
     @classmethod
     def _group_invoice_key(cls, line):
