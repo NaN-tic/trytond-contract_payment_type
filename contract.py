@@ -31,7 +31,7 @@ class Contract(BankMixin, metaclass=PoolMeta):
         if len(payment_types) == 1:
             return payment_types[0].id
 
-    @fields.depends('party')
+    @fields.depends('party', methods=['_get_bank_account'])
     def on_change_party(self):
         self.payment_type = None
         self.bank_account = None
@@ -40,6 +40,10 @@ class Contract(BankMixin, metaclass=PoolMeta):
             self.payment_type = self.party.customer_payment_type
         if self.payment_type:
             self._get_bank_account()
+
+    # Needed for mixin
+    def on_change_with_payment_type(self, name=None):
+        return
 
 class ContractConsumption(metaclass=PoolMeta):
     __name__ = 'contract.consumption'

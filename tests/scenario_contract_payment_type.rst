@@ -35,6 +35,9 @@ Create chart of accounts::
 
     >>> _ = create_chart(company)
     >>> accounts = get_accounts(company)
+    >>> revenue = accounts['revenue']
+    >>> expense = accounts['expense']
+    >>> cash = accounts['cash']
 
 Create tax::
 
@@ -90,6 +93,16 @@ Configure contract::
     >>> contract_config.payment_term = payment_term
     >>> contract_config.save()
 
+
+Create account categories:
+
+    >>> ProductCategory = Model.get('product.category')
+    >>> account_category = ProductCategory(name="Account Category")
+    >>> account_category.accounting = True
+    >>> account_category.account_expense = expense
+    >>> account_category.account_revenue = revenue
+    >>> account_category.save()
+
 Create product::
 
     >>> ProductUom = Model.get('product.uom')
@@ -105,9 +118,7 @@ Create product::
     >>> template.default_uom = unit
     >>> template.type = 'service'
     >>> template.list_price = Decimal('40')
-    >>> template.account_expense = accounts['expense']
-    >>> template.account_revenue = accounts['revenue']
-    >>> template.customer_taxes.append(tax)
+    >>> template.account_category = account_category
     >>> template.save()
     >>> product, = template.products
 
@@ -160,7 +171,7 @@ Create Monthly Contract::
 
     >>> contract.click('confirm')
     >>> contract.state
-    u'confirmed'
+    'confirmed'
 
 Create consumptions for 2015-01-31::
 
@@ -268,14 +279,14 @@ Check invoice lines amount::
     >>> sorted([(l.origin.contract_line.service.name,
     ...         str(l.invoice.invoice_date), l.amount)
     ...     for l in lines]) == \
-    ... sorted([(u'service1', '2015-01-01', Decimal('100.00')),
-    ...     (u'service2', '2015-01-01', Decimal('200.00')),
-    ...     (u'service1', '2015-02-01', Decimal('100.00')),
-    ...     (u'service2', '2015-02-01', Decimal('107.14')),
-    ...     (u'service3', '2015-02-01', Decimal('150.00')),
-    ...     (u'service4', '2015-02-01', Decimal('200.00')),
-    ...     (u'service4', '2015-03-01', Decimal('400.00')),
-    ...     (u'service1', '2015-03-01', Decimal('3.23')),
-    ...     (u'service4', '2015-04-01', Decimal('400.00')),
+    ... sorted([('service1', '2015-01-01', Decimal('100.00')),
+    ...     ('service2', '2015-01-01', Decimal('200.00')),
+    ...     ('service1', '2015-02-01', Decimal('100.00')),
+    ...     ('service2', '2015-02-01', Decimal('107.14')),
+    ...     ('service3', '2015-02-01', Decimal('150.00')),
+    ...     ('service4', '2015-02-01', Decimal('200.00')),
+    ...     ('service4', '2015-03-01', Decimal('400.00')),
+    ...     ('service1', '2015-03-01', Decimal('3.23')),
+    ...     ('service4', '2015-04-01', Decimal('400.00')),
     ...     ])
     True
