@@ -90,7 +90,6 @@ Configure contract::
 
     >>> contract_config = ContractConfig(1)
     >>> contract_config.journal, = Journal.find([('type', '=', 'revenue')])
-    >>> contract_config.payment_term = payment_term
     >>> contract_config.save()
 
 
