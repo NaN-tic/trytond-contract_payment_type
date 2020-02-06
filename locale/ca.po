@@ -1,0 +1,35 @@
+#
+msgid ""
+msgstr "Content-Type: text/plain; charset=utf-8\n"
+
+msgctxt "field:contract,account_bank:"
+msgid "Account Bank"
+msgstr "Cuenta bancaria"
+
+msgctxt "field:contract,account_bank_from:"
+msgid "Account Bank From"
+msgstr "Compte bancari de"
+
+msgctxt "field:contract,bank_account:"
+msgid "Bank Account"
+msgstr "Compte bancari"
+
+msgctxt "field:contract,payment_type:"
+msgid "Payment Type"
+msgstr "Tipus de pagament"
+
+msgctxt "selection:contract,account_bank:"
+msgid "Company"
+msgstr "Empresa"
+
+msgctxt "selection:contract,account_bank:"
+msgid "None"
+msgstr "Cap"
+
+msgctxt "selection:contract,account_bank:"
+msgid "Other"
+msgstr "Un altre"
+
+msgctxt "selection:contract,account_bank:"
+msgid "Party"
+msgstr "Tercer"
