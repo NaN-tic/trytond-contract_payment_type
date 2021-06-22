@@ -57,8 +57,8 @@ class ContractConsumption(metaclass=PoolMeta):
             ]
 
     @classmethod
-    def _get_invoice(cls, keys):
-        invoice = super(ContractConsumption, cls)._get_invoice(keys)
+    def _get_invoice(cls, keys, lines):
+        invoice = super(ContractConsumption, cls)._get_invoice(keys, lines)
         values = dict(keys)
         invoice.payment_type = values['payment_type']
         invoice.bank_account = values['bank_account']
