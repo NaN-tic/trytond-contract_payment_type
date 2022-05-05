@@ -2,6 +2,7 @@
 # the full copyright notices and license terms.
 from trytond.model import fields
 from trytond.pool import Pool, PoolMeta
+from trytond.pyson import Eval
 from trytond.modules.account_bank.account import BankMixin
 
 __all__ = ['PaymentType', 'Contract', 'ContractConsumption']
@@ -23,6 +24,12 @@ class Contract(BankMixin, metaclass=PoolMeta):
         domain=[
             ('kind', 'in', ['both', 'receivable']),
             ])
+
+    @classmethod
+    def __setup__(cls):
+        super().__setup__()
+        cls.account_bank_from.context = {'company': Eval('company')}
+        cls.account_bank_from.depends.add('company')
 
     @classmethod
     def default_payment_type(cls):
