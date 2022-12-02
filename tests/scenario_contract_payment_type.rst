@@ -81,6 +81,7 @@ Create party::
     >>> customer.customer_payment_term = payment_term
     >>> customer.customer_payment_type = payment_type
     >>> customer.bank_accounts.append(bank_account)
+    >>> customer.receivable_bank_account = bank_account
     >>> customer.save()
 
 Configure contract::
