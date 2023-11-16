@@ -28,7 +28,7 @@ class Contract(BankMixin, metaclass=PoolMeta):
     @classmethod
     def __setup__(cls):
         super().__setup__()
-        cls.account_bank_from.context = {'company': Eval('company')}
+        cls.account_bank_from.context = {'company': Eval('company', -1)}
         cls.account_bank_from.depends.add('company')
 
     @classmethod
