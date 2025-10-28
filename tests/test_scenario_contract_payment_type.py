@@ -72,7 +72,7 @@ class Test(unittest.TestCase):
         BankNumber = Model.get('bank.account.number')
         bank_account = BankAccount()
         bank_account.bank = bank
-        bank_account.numbers.append(BankNumber(type='other'))
+        bank_account.numbers.append(BankNumber(number='1', type='other'))
         bank_account.save()
 
         # Create party
